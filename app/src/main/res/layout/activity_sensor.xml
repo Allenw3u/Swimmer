@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/baseLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="2dp"
+    tools:context="allenw3u.swimmer.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/controlArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/startButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/startbutton" />
+
+        <ImageView
+            android:id="@+id/stopButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/stopbutton" />
+
+        <TextView
+            android:id="@+id/hintText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="5"
+            tools:text="点击开始采集数据" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/accText"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_below="@+id/controlArea"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        tools:text="data" />
+
+    <com.androidplot.xy.XYPlot
+        android:id="@+id/XYPlot"
+        title="Acceleration Plot"
+        android:layout_width="match_parent"
+        android:layout_height="340dp"
+        android:layout_below="@id/accText" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true">
+
+        <Button
+            android:id="@+id/outputFileButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Output file" />
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="reset" />
+    </LinearLayout>
+
+
+</RelativeLayout>

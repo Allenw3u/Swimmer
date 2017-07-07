@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="allenw3u.swimmer">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.sensor.accelerometer"
+        android:required="true"/>
+    <uses-feature android:name="android.hardware.sensor.gyroscope"
+        android:required="false"/>
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".InfoActivity"
+            android:theme="@style/InfoTheme"
+            android:parentActivityName=".MainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".SensorActivity"
+            android:theme="@style/SensorTheme"
+            android:parentActivityName=".InfoActivity">
+        </activity>
+        <activity android:name=".SwimmerActivity"
+            android:theme="@style/SwimmerTheme"
+            android:parentActivityName=".MainActivity">
+        </activity>
+    </application>
+
+</manifest>

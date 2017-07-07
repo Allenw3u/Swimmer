@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="allenw3u.swimmer.MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/main_button"
+        android:fontFamily="casual"
+        android:paddingBottom="15dp"
+        android:paddingLeft="50dp"
+        android:text="@string/home_hint_text"
+        android:textColor="@color/colorHomepageHintBlue"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:id="@+id/main_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/developer_button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/developer_mode_button" />
+
+        <Button
+            android:id="@+id/swimmer_button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/swimmer_mode_button" />
+    </LinearLayout>
+
+
+</RelativeLayout>

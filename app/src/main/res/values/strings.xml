@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Swimmer</string>
+
+    <!-- Text for home hint text -->
+    <string name="home_hint_text">Please select mode:</string>
+
+    <!-- Button text for developer -->
+    <string name="developer_mode_button">Developer Mode</string>
+
+    <!-- Button text for swimmer -->
+    <string name="swimmer_mode_button">Swimmer Mode</string>
+
+    <!-- Username category in the editor of user infomation -->
+    <string name="username_category">User Name</string>
+
+    <!-- Hint for Username category input -->
+    <string name="hint_username">Username</string>
+
+    <!-- Swim style category in the editor of user information -->
+    <string name="swimStyle_category">Swim Style</string>
+
+    <!-- Lap distance category in the editor of user information -->
+    <string name="lapDistance_category">Lap Distance</string>
+
+    <!-- Next Button in the activity_info.xml -->
+    <string name="next_button">Next</string>
+
+    <!-- options of spinner of swim style : Freestyle -->
+    <string name="freestyle">Freestyle</string>
+
+    <!-- options of spinner of swim style : Breaststroke -->
+    <string name="breaststroke">Breaststroke</string>
+
+    <!-- options of spinner of swim style : Butterfly -->
+    <string name="butterfly">Butterfly</string>
+
+    <!-- options of spinner of swim style : Backstroke -->
+    <string name="backstroke">Backstroke</string>
+
+    <!-- options of spinner of lap distance : 25m -->
+    <string name="meter25">25m</string>
+
+    <!-- options of spinner of lap distance : 25m -->
+    <string name="meter50">50m</string>
+
+    <string name="unknown">Unknown</string>
+
+
+
+
+</resources>

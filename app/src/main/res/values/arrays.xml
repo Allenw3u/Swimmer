@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These are the options displayed in the swim style drop-down Spinner -->
+    <string-array name="array_swimstyle_options">
+        <item>@string/unknown</item>
+        <item>@string/freestyle</item>
+        <item>@string/breaststroke</item>
+        <item>@string/butterfly</item>
+        <item>@string/backstroke</item>
+    </string-array>
+
+    <!-- These are the options displayed in the lap distance drop-down Spinner -->
+    <string-array name="array_lapdistance_options">
+        <item>@string/unknown</item>
+        <item>@string/meter25</item>
+        <item>@string/meter50</item>
+    </string-array>
+</resources>
