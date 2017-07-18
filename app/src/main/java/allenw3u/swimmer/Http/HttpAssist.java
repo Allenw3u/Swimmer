@@ -28,7 +28,7 @@ public class HttpAssist {
         String BOUNDARY = UUID.randomUUID().toString();
         String PREFIX = "--", LINE_END = "\r\n";
         String CONTENT_TYPE = "multipart/form-data";
-        String RequestURl = "http://119.23.9.146:8000/DataSet/Uploadfile";
+        String RequestURl = "http://119.23.9.146/swim/Uploadfile";
 
         String result = null;
         try {
@@ -58,7 +58,7 @@ public class HttpAssist {
                 sb.append(LINE_END);
 
 
-                sb.append("Content-Disposition: form-data; name=\"img\"; filename=\""
+                sb.append("Content-Disposition: form-data; name=\"accData\"; filename=\""
                         + file.getName() + "\"" + LINE_END);
                 sb.append("Content-Type: application/octet-stream; charset="
                         + CHARSET + LINE_END);
