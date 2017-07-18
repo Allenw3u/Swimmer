@@ -1,5 +1,7 @@
 package allenw3u.swimmer.Http;
 
+import android.util.Log;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +19,7 @@ import java.util.UUID;
 
 public class HttpAssist {
     private static final String TAG = "uploadFile";
-    private static final int TIME_OUT = 10 * 10000000;
+    private static final int TIME_OUT = 10 * 1000;
     private static final String CHARSET = "utf-8";
     private static final String SUCCESS = "1";
     private static final String FAILURE = "0";
@@ -27,13 +29,15 @@ public class HttpAssist {
         String PREFIX = "--", LINE_END = "\r\n";
         String CONTENT_TYPE = "multipart/form-data";
         String RequestURl = "http://119.23.9.146:8000/DataSet/Uploadfile";
+
+        String result = null;
         try {
             URL url = new URL(RequestURl);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setReadTimeout(TIME_OUT);
             conn.setConnectTimeout(TIME_OUT);
-            conn.setDoInput(true);//允许输入流
-            conn.setDoOutput(true);//允许输出流
+            conn.setDoInput(true);//允许输入流,输入流为外存（或网络端点等）到内存
+            conn.setDoOutput(true);//允许输出流，输出流为内存到外存（或网络端点等）
             //To upload data to a web server, configure the connection for output using setDoOutput(true).
             conn.setUseCaches(false);//不允许使用缓存
             conn.setRequestMethod("POST");//请求方式
@@ -45,7 +49,9 @@ public class HttpAssist {
                  * 当文件不为空时才连接输出流
                  */
                 OutputStream outputStream = conn.getOutputStream();
+                //输出流，由内存到网络端点
                 DataOutputStream dos = new DataOutputStream(outputStream);
+                //DataOutputStream and DataInputStream give us the power to write and read primitive data type to a media such as file.
                 StringBuilder sb = new StringBuilder();
                 sb.append(PREFIX);
                 sb.append(BOUNDARY);
@@ -59,6 +65,12 @@ public class HttpAssist {
                 sb.append(LINE_END);
                 dos.write(sb.toString().getBytes());
                 InputStream inputStream = new FileInputStream(file);
+                //FileInputStream is meant for reading streams of raw bytes such as image data.
+                /**
+                 * DataInputStream是数据输入流，读取的是java的基本数据类型。
+                 * FileInputStream是从文件系统中，读取的单位是字节。
+                 * FileReader 是从文件中，读取的单位是字符
+                 */
                 byte[] bytes = new byte[1024];
                 int len = 0;
                 while ((len = inputStream.read(bytes)) != -1){
@@ -75,7 +87,16 @@ public class HttpAssist {
                  */
                 int res = conn.getResponseCode();
                 if (res == 200) {
-                    return SUCCESS;
+                    Log.e(TAG,"request success");
+                    InputStream input = conn.getInputStream();
+                    StringBuffer sbResponse = new StringBuffer();
+                    int ss;
+                    while ((ss = input.read()) != -1){
+                        sbResponse.append((char)ss);
+                    }
+                    result = sbResponse.toString();
+                    Log.i(TAG,"result :" + result);
+                    return result;
                 }
             }
 
