@@ -13,11 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import allenw3u.swimmer.Http.HttpAssist;
 
 
 /**
@@ -44,6 +47,9 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
 
     //定义加速度传感器和陀螺仪第一次调用时间
     private long accStartTime;
+
+    //定义文件输出时的系统时间
+    private String mtime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +80,7 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
                 acc_id = 0;
                 accStartTime = 0;
                 acc_txt.setLength(0);
+                mtime = null;
             }
         });
 
@@ -98,10 +105,10 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
                 try {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
                     Date curTime = new Date(System.currentTimeMillis());
-                    String time = formatter.format(curTime);
+                    mtime = formatter.format(curTime);
                     //输出流 第一个参数为文件名
                     FileOutputStream out;
-                    out = new FileOutputStream("/sdcard/accelarator/" + time + "Acc.txt");
+                    out = new FileOutputStream("/sdcard/accelarator/" + mtime + "Acc.txt");
                     String acc_String = acc_txt.toString();
                     //把内容转为字节类型
                     byte[] acc_message = acc_String.getBytes();
@@ -113,6 +120,14 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
                     Log.e("e",e.getMessage());
                 } catch (IOException e) {
                     e.printStackTrace();
+                }
+
+                //实现上传文件
+                File file = new File("/sdcard/accelarator/" + mtime + "Acc.txt");
+                if (file != null)
+                {
+                    String request = HttpAssist.uploadFile(file);
+                    Toast.makeText(SwimmerActivity.this,request,Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -147,7 +162,6 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
         //将每次采集的加速度速度append到StringBuilder中
         acc_txt.append(acc_id+" ,"+dT+" ,"+values[0]+ " ,"+ values[1]+" ,"+values[2]+"\n");
         acc_id++;
-
     }
 
     @Override
