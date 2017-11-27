@@ -28,7 +28,7 @@ public class HttpAssist {
         String BOUNDARY = UUID.randomUUID().toString();
         String PREFIX = "--", LINE_END = "\r\n";
         String CONTENT_TYPE = "multipart/form-data";
-        String RequestURl = "http://119.23.9.146/swim/Uploadfile";
+        String RequestURl = "http://119.23.9.146:8080/swim/Uploadfile/";
 
         String result = null;
         try {
@@ -42,8 +42,9 @@ public class HttpAssist {
             conn.setUseCaches(false);//不允许使用缓存
             conn.setRequestMethod("POST");//请求方式
             conn.setRequestProperty("Charset",CHARSET);
-            conn.setRequestProperty("connection","keep-alive");
+            conn.setRequestProperty("Connection","Keep-Alive");
             conn.setRequestProperty("Content-Type",CONTENT_TYPE + ";boundary=" + BOUNDARY);
+
             if(file != null){
                 /**
                  * 当文件不为空时才连接输出流
@@ -53,15 +54,18 @@ public class HttpAssist {
                 DataOutputStream dos = new DataOutputStream(outputStream);
                 //DataOutputStream and DataInputStream give us the power to write and read primitive data type to a media such as file.
                 StringBuilder sb = new StringBuilder();
+
+                //文件开始
                 sb.append(PREFIX);
                 sb.append(BOUNDARY);
                 sb.append(LINE_END);
 
-
                 sb.append("Content-Disposition: form-data; name=\"accData\"; filename=\""
                         + file.getName() + "\"" + LINE_END);
-                sb.append("Content-Type: application/octet-stream; charset="
-                        + CHARSET + LINE_END);
+                //如果Content-Type部分不想添加根据文件后缀名填充值的话，可以直接用application/octet-stream
+                //sb.append("Content-Type: application/octet-stream; charset="
+                //        + CHARSET + LINE_END);
+
                 sb.append(LINE_END);
                 dos.write(sb.toString().getBytes());
                 InputStream inputStream = new FileInputStream(file);
@@ -73,21 +77,36 @@ public class HttpAssist {
                  */
                 byte[] bytes = new byte[1024];
                 int len = 0;
-                while ((len = inputStream.read(bytes)) != -1){
+                while ((len = inputStream.read(bytes)) != -1)
+                {
                     dos.write(bytes, 0 , len);
                 }
                 inputStream.close();
                 dos.write(LINE_END.getBytes());
+
+                //文件结束
                 byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINE_END)
                         .getBytes();
                 dos.write(end_data);
                 dos.flush();
+
                 /**
                  * 获取响应码 200=成功 当响应成功，获取响应的流
                  */
-                int res = conn.getResponseCode();
+                //int res = conn.getResponseCode();
+                //result = Integer.toString(res);
+
+                InputStream input = conn.getInputStream();
+                StringBuffer sbResponse = new StringBuffer();
+                int ss;
+                while ((ss = input.read()) != -1){
+                    sbResponse.append((char)ss);
+                }
+                result = sbResponse.toString();
+                return result;
+                /**
                 if (res == 200) {
-                    Log.e(TAG,"request success");
+                    Log.i(TAG,"request success");
                     InputStream input = conn.getInputStream();
                     StringBuffer sbResponse = new StringBuffer();
                     int ss;
@@ -98,6 +117,8 @@ public class HttpAssist {
                     Log.i(TAG,"result :" + result);
                     return result;
                 }
+                 */
+
             }
 
         } catch (MalformedURLException e) {

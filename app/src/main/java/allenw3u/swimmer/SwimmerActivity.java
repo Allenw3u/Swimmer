@@ -5,22 +5,31 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import allenw3u.swimmer.Http.HttpAssist;
+import allenw3u.swimmer.Http.HttpGet;
+import allenw3u.swimmer.Http.HttpPost;
 
 
 /**
@@ -28,12 +37,16 @@ import allenw3u.swimmer.Http.HttpAssist;
  */
 
 public class SwimmerActivity extends AppCompatActivity implements SensorEventListener {
+    private static final String TAG = "testConnect";
     //创建常量，把纳秒转换为毫秒。
     private static final float NS2MS = 1.0f/1000000f;
 
+    private Button mTest2Button;
+    private Button mTestButton;
     private Button mStartButton;
     private Button mStopButton;
     private Button mReportButton;
+    private TextView mTextView;
     private SensorManager sensorManager;
 
     //记录线性加速度传感器数据条目序号
@@ -59,6 +72,9 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
         mStartButton = (Button)findViewById(R.id.start_button);
         mStopButton = (Button)findViewById(R.id.stop_button);
         mReportButton = (Button)findViewById(R.id.report_button);
+        mTestButton = (Button)findViewById(R.id.test_button);
+        mTest2Button = (Button)findViewById(R.id.test2_button);
+        mTextView = (TextView) findViewById(R.id.traceback);
 
         //获取系统的传感器管理服务
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
@@ -122,13 +138,27 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
                     e.printStackTrace();
                 }
 
-                //实现上传文件
+                //启用AsycnTask进行网络连接,实现上传文件，以防UI主线程崩溃
                 File file = new File("/sdcard/accelarator/" + mtime + "Acc.txt");
-                if (file != null)
-                {
-                    String request = HttpAssist.uploadFile(file);
-                    Toast.makeText(SwimmerActivity.this,request,Toast.LENGTH_LONG).show();
-                }
+                new HttpUploadTask().execute(file);
+
+            }
+        });
+
+        mTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //改为AsycnTask副线程实现连接，当UploadResult不为null则刷新mTestButton的UI文字
+                new HttpGetTest().execute();
+
+            }
+        });
+
+        mTest2Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //改为AsycnTask副线程实现连接，当UploadResult不为null则刷新mTestButton的UI文字
+                new HttpPostTest().execute();
             }
         });
 
@@ -168,4 +198,62 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+    //创建AsycnTask类，请求网络Http连接读取Response
+    //泛型传递数组类型定义为URL，Void，String
+    public class HttpGetTest extends AsyncTask<Void,Void,String>{
+        //使用params作为doInBackground输入
+        @Override
+        protected String doInBackground(Void... params) {
+            String result = null;
+            result = HttpGet.getTest();
+            return result;
+        }
+
+        //使用Result作为onPostExecute输入
+        @Override
+        protected void onPostExecute(String s) {
+            if(s != null && !s.equals("")){
+                mTestButton.setText(s);
+            }
+        }
+    }
+
+    public class HttpPostTest extends AsyncTask<Void,Void,String>{
+        //使用params作为doInBackground输入
+        @Override
+        protected String doInBackground(Void... params) {
+            String result = null;
+            result = HttpPost.postTest();
+            return result;
+        }
+
+        //使用Result作为onPostExecute输入
+        @Override
+        protected void onPostExecute(String s) {
+            if(s != null && !s.equals("")){
+                mTest2Button.setText(s);
+            }
+        }
+    }
+
+    public class HttpUploadTask extends AsyncTask<File,Void,String>{
+
+        @Override
+        protected String doInBackground(File... params) {
+            File uploadFile = params[0];
+            String uploadResult = HttpAssist.uploadFile(uploadFile);
+            return uploadResult;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s != null && !s.equals("")){
+                mTextView.setText(s);
+            }
+        }
+    }
+
+
 }
