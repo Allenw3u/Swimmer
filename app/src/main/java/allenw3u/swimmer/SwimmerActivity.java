@@ -41,8 +41,8 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
     //创建常量，把纳秒转换为毫秒。
     private static final float NS2MS = 1.0f/1000000f;
 
-    private Button mTest2Button;
-    private Button mTestButton;
+    private Button mGetButton;
+    private Button mPostButton;
     private Button mStartButton;
     private Button mStopButton;
     private Button mReportButton;
@@ -72,8 +72,8 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
         mStartButton = (Button)findViewById(R.id.start_button);
         mStopButton = (Button)findViewById(R.id.stop_button);
         mReportButton = (Button)findViewById(R.id.report_button);
-        mTestButton = (Button)findViewById(R.id.test_button);
-        mTest2Button = (Button)findViewById(R.id.test2_button);
+        mGetButton = (Button)findViewById(R.id.get_button);
+        mPostButton = (Button)findViewById(R.id.post_button);
         mTextView = (TextView) findViewById(R.id.traceback);
 
         //获取系统的传感器管理服务
@@ -145,19 +145,19 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
             }
         });
 
-        mTestButton.setOnClickListener(new View.OnClickListener() {
+        mGetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //改为AsycnTask副线程实现连接，当UploadResult不为null则刷新mTestButton的UI文字
+                //改为AsycnTask副线程实现连接，当UploadResult不为null则刷新mGetButton的UI文字
                 new HttpGetTest().execute();
 
             }
         });
 
-        mTest2Button.setOnClickListener(new View.OnClickListener() {
+        mPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //改为AsycnTask副线程实现连接，当UploadResult不为null则刷新mTestButton的UI文字
+                //改为AsycnTask副线程实现连接，当UploadResult不为null则刷新mPostButton的UI文字
                 new HttpPostTest().execute();
             }
         });
@@ -214,7 +214,7 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
         @Override
         protected void onPostExecute(String s) {
             if(s != null && !s.equals("")){
-                mTestButton.setText(s);
+                mGetButton.setText(s);
             }
         }
     }
@@ -232,7 +232,7 @@ public class SwimmerActivity extends AppCompatActivity implements SensorEventLis
         @Override
         protected void onPostExecute(String s) {
             if(s != null && !s.equals("")){
-                mTest2Button.setText(s);
+                mPostButton.setText(s);
             }
         }
     }

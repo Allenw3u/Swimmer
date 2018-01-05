@@ -6,16 +6,18 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/test_button"
+        android:id="@+id/get_button"
+        android:hint="GET"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:id="@+id/test2_button"
+        android:id="@+id/post_button"
+        android:hint="POST"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/test_button"
+        android:layout_below="@+id/get_button"
         android:layout_centerHorizontal="true" />
 
     <Button
